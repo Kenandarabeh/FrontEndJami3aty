@@ -32,7 +32,7 @@ export const Contact = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post("https://backendjami3aty.onrender.com/api/auth/signin",
+      const res = await axios.post("https://jami3aty-api.onrender.com/api/auth/signin",
         { email, password }
       );
       const userId = res.data._id;
