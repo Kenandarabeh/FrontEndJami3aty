@@ -84,7 +84,7 @@ const Profile = ({ isLightMode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${currentUser}`);
         setUser(res.data);
       } catch (error) {
         console.error('Error fetching user:', error);
@@ -94,7 +94,7 @@ const Profile = ({ isLightMode }) => {
 
     const fetchStudent = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/student/getStudent/${currentUser}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/student/getStudent/${currentUser}`);
         setStudent(res.data[0]);
       } catch (error) {
         console.error('Error fetching student:', error);
@@ -134,11 +134,11 @@ const Profile = ({ isLightMode }) => {
         formData.append('level', student.level);
 
         // Send the update request
-        await axios.put(`http://localhost:8800/api/users/update/${currentUser}`, formData);
+        await axios.put(`https://jami3aty-api.onrender.com/api/users/update/${currentUser}`, formData);
         alert('User update successfully');
 
         // Refresh user data after update
-        const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${currentUser}`);
         setUser(res.data);
       }
     } catch (error) {
