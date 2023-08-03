@@ -80,7 +80,7 @@ const [loading, setLoading] = useState([]);
     //  to get the course for the  teacher 
     useEffect(() => {
         const fetchCourses = async () => {
-            const res = await axios.get(`http://localhost:8800/api/course/find/${IdT}`);
+            const res = await axios.get(`https://jami3aty-api.onrender.com/api/course/find/${IdT}`);
             setCourses(res.data);
         };
 
@@ -94,7 +94,7 @@ const [loading, setLoading] = useState([]);
     //  to get the information to the teacher 
     useEffect(() => {
         const fetchTeacher = async () => {
-            const helf = await axios.get(`http://localhost:8800/api/teacher/getTeachers/${IdT}`);
+            const helf = await axios.get(`https://jami3aty-api.onrender.com/api/teacher/getTeachers/${IdT}`);
 
             setLoading(helf.data[0]);
         };
@@ -110,7 +110,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axios.get(`http://localhost:8800/api/users/find/${IdT}`);
+            const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${IdT}`);
             setUser(res.data);
         };
 
