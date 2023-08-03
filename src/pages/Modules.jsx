@@ -74,7 +74,7 @@ const Modules = ({ isLightMode }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/chapter/getChapter/${courseId}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/chapter/getChapter/${courseId}`);
         setCourses(res.data);
       } catch (error) {
         console.error(error);
@@ -92,7 +92,7 @@ const Modules = ({ isLightMode }) => {
   useEffect(() => {
     const fetchChapter = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/findById/${courseId}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/course/findById/${courseId}`);
         console.log(res.data);
         setChapter(res.data[0]);
       } catch (error) {
@@ -114,7 +114,7 @@ const Modules = ({ isLightMode }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/users/find/${chapter.userId}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${chapter.userId}`);
         console.log(res.data);
         setUser(res.data);
       } catch (error) {
