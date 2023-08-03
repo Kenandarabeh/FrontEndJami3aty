@@ -23,7 +23,7 @@ const Home = ({ isLightMode }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${currentUser}`);
 
         console.log(res.data)
         setUser(res.data);
@@ -49,7 +49,7 @@ const Home = ({ isLightMode }) => {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/student/getStudent/${currentUser}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/student/getStudent/${currentUser}`);
         console.log(res.data[0]);
         setStudent(res.data[0]);
         console.log(res.data[0].level);
@@ -70,7 +70,7 @@ const Home = ({ isLightMode }) => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/findCourseBystudent/${student.level ? student.level : null}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/course/findCourseBystudent/${student.level ? student.level : null}`);
         console.log(res.data);
         setCourses(res.data);
       } catch (error) {
@@ -93,7 +93,7 @@ const Home = ({ isLightMode }) => {
   //  get the teachers 
   useEffect(() => {
     const fetchTeacher = async () => {
-      const helf = await axios.get(`http://localhost:8800/api/teacher/getTeachers/${courses[0].userId}`);
+      const helf = await axios.get(`https://jami3aty-api.onrender.com/api/teacher/getTeachers/${courses[0].userId}`);
 
       setTeacher(helf.data);
     };
