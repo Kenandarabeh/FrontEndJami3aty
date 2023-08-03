@@ -36,7 +36,7 @@ function CreateModules2({ isLightMode }) {
     const fetchinstitute = async () => {
       if (userId) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/users/find/${userId}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${userId}`);
           console.log(res)
           setUser(res.data);
         } catch (error) {
@@ -60,7 +60,7 @@ function CreateModules2({ isLightMode }) {
     const fetchInstitute = async () => {
       if (user.Department) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${user.Department}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/aD/${user.Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -93,7 +93,7 @@ function CreateModules2({ isLightMode }) {
     const fetchInstitute = async () => {
       if (specialization) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${specialization}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/aS/${specialization}`);
           console.log(res.data[0])
           setSpecializationename(res.data[0]);
         } catch (error) {
@@ -122,7 +122,7 @@ function CreateModules2({ isLightMode }) {
     const fetchinstitute = async () => {
       if (specializationename._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/level/alllev/${specializationename._id}`);
           console.log(res.data)
           setlevele(res.data);
         } catch (error) {
@@ -147,7 +147,7 @@ function CreateModules2({ isLightMode }) {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname ? departementname._id : null}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/allS/${departementname ? departementname._id : null}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -176,7 +176,7 @@ function CreateModules2({ isLightMode }) {
     const fetchCourses = async () => {
 
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/find/${userId}`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/course/find/${userId}`);
         setCourses(res.data);
       } catch (error) {
         console.error(error);
@@ -202,7 +202,7 @@ function CreateModules2({ isLightMode }) {
     if (newModule.trim() !== '' && level.trim() !== '' && specialization.trim() !== '') {
       try {
         if (selectedModule) {
-          await axios.put(`http://localhost:8800/api/course/update/${selectedModule._id}`, {
+          await axios.put(`https://jami3aty-api.onrender.com/api/course/update/${selectedModule._id}`, {
             name: newModule,
             level: level,
             specialization: specialization
@@ -220,7 +220,7 @@ function CreateModules2({ isLightMode }) {
           }));
           setSelectedModule(null);
         } else {
-          const res = await axios.post(`http://localhost:8800/api/course/add/${userId}`, {
+          const res = await axios.post(`https://jami3aty-api.onrender.com/api/course/add/${userId}`, {
             name: newModule,
             level: level,
             specialization: specialization
@@ -245,7 +245,7 @@ function CreateModules2({ isLightMode }) {
 // delete course 
   const handleDeleteModule = async (moduleId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/course/delete/${moduleId}`);
+      await axios.delete(`https://jami3aty-api.onrender.com/api/course/delete/${moduleId}`);
       setModules(modules.filter(module => module._id !== moduleId));
     } catch (error) {
       console.error(error);
