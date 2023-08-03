@@ -82,7 +82,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const res = await axios.get(`http://localhost:8800/api/course/find/${IdT}`);
+            const res = await axios.get(`https://jami3aty-api.onrender.com/api/course/find/${IdT}`);
             setCourses(res.data);
         };
 
@@ -98,7 +98,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchTeacher = async () => {
-            const helf = await axios.get(`http://localhost:8800/api/teacher/getTeachers/${IdT}`);
+            const helf = await axios.get(`https://jami3aty-api.onrender.com/api/teacher/getTeachers/${IdT}`);
 
             setLoading(helf.data[0]);
         };
