@@ -42,7 +42,7 @@ function CreateChapter({ isLightMode }) {
 //to get chpater 
   const fetchChapters = async () => {
     try {
-      const res = await axios.get(`http://localhost:8800/api/chapter/getChapter/${courseId}`);
+      const res = await axios.get(`https://jami3aty-api.onrender.com/api/chapter/getChapter/${courseId}`);
       setChapters(res.data);
     } catch (error) {
       console.error(error);
@@ -96,7 +96,7 @@ function CreateChapter({ isLightMode }) {
         alert('Please fill in all the required fields.');
         return;
       }
-      await axios.post(`http://localhost:8800/api/chapter/${courseId}`, formData, {
+      await axios.post(`https://jami3aty-api.onrender.com/api/chapter/${courseId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -135,7 +135,7 @@ function CreateChapter({ isLightMode }) {
 // to delete the the chpater 
   const handleDelete = async (chapterId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/chapter/delete/${chapterId}`);
+      await axios.delete(`https://jami3aty-api.onrender.com/api/chapter/delete/${chapterId}`);
 
       // Refresh the chapters list
       fetchChapters();
