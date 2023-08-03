@@ -42,10 +42,7 @@ function AppUse() {
     }
   }, [isAuthenticated]);
 
-  // Check if useres is null before accessing its properties
-  if (!useres) {
-    return <div>Loading...</div>;
-  }
+
 
   // Now you can safely access useres properties
   return (
