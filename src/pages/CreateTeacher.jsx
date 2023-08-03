@@ -44,7 +44,7 @@ function CreateTeacher() {
   useEffect(() => {
     const fetchinstitute = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/institute/allI`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/allI`);
         console.log(res.data)
         getInstitutes(res.data);
       } catch (error) {
@@ -67,7 +67,7 @@ function CreateTeacher() {
     const fetchInstitute = async () => {
       if (institute) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${institute}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/aI/${institute}`);
           console.log(res.data[0])
           getInstitutesname(res.data[0]);
         } catch (error) {
@@ -93,7 +93,7 @@ function CreateTeacher() {
     const fetchInstitute = async () => {
       if (searchQueryins) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${searchQueryins}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/aI/${searchQueryins}`);
           console.log(res.data[0])
           getInstitutesname2(res.data[0]);
         } catch (error) {
@@ -116,7 +116,7 @@ function CreateTeacher() {
     const fetchinstitute = async () => {
       if (Institutesname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname2._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/allD/${Institutesname2._id}`);
           console.log(res)
           getdepartement2(res.data);
         } catch (error) {
@@ -139,7 +139,7 @@ function CreateTeacher() {
     const fetchinstitute = async () => {
       if (Institutesname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/allD/${Institutesname._id}`);
           console.log(res)
           getdepartement(res.data);
         } catch (error) {
@@ -170,7 +170,7 @@ function CreateTeacher() {
     const fetchInstitute = async () => {
       if (Department || Department !== 'select') {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${Department}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/aD/${Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -198,7 +198,7 @@ function CreateTeacher() {
     const fetchInstitute = async () => {
       if (searchQueryD) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${searchQueryD}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/aD/${searchQueryD}`);
           console.log(res.data[0])
           getdepartementname2(res.data[0]);
         } catch (error) {
@@ -218,7 +218,7 @@ function CreateTeacher() {
     const fetchinstitute = async () => {
       if (departementname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname2._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/allS/${departementname2._id}`);
           console.log(res)
           setSpecializatione2(res.data);
         } catch (error) {
@@ -239,7 +239,7 @@ function CreateTeacher() {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${ departementname._id }`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/allS/${ departementname._id }`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -267,7 +267,7 @@ function CreateTeacher() {
 // to work the get the usters(teachers)
   const getUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8800/api/users/findAll');
+      const response = await axios.get('https://jami3aty-api.onrender.com/api/users/findAll');
       setUsers(response.data);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -338,7 +338,7 @@ function CreateTeacher() {
       if (selectedUser) {
         await handleUpdateUser(selectedUser._id, formData);
       } else {
-        await axios.post('http://localhost:8800/api/auth/signup', formData);
+        await axios.post('https://jami3aty-api.onrender.com/api/auth/signup', formData);
         alert('User created successfully');
       }
 
@@ -375,7 +375,7 @@ function CreateTeacher() {
   // to update teacher 
   const handleUpdateUser = async (userId, updatedData) => {
     try {
-      await axios.put(`http://localhost:8800/api/users/update/${userId}`, updatedData);
+      await axios.put(`https://jami3aty-api.onrender.com/api/users/update/${userId}`, updatedData);
       alert('User updated successfully');
       getUsers(); // Refresh the user list
     } catch (error) {
@@ -400,7 +400,7 @@ function CreateTeacher() {
 // to delete teacher
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/delete/${userId}`);
+      await axios.delete(`https://jami3aty-api.onrender.com/api/users/delete/${userId}`);
       alert('User deleted successfully');
       getUsers(); // Refresh the user list
     } catch (error) {
