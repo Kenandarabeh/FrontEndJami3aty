@@ -13,7 +13,7 @@ function AppUse() {
 // this for to take admin go to page admin take login go to the page admin take the student go to the page student 
     useEffect(() => {
         const fetchCourses = async () => {
-            const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+            const res = await axios.get(`https://jami3aty-api.onrender.com/api/users/find/${currentUser}`);
             console.log(res.data);
             setuseres(res.data);
         };
