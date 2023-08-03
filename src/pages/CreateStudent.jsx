@@ -47,7 +47,7 @@ function CreateStudent() {
   useEffect(() => {
     const fetchinstitute = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/institute/allI`);
+        const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/allI`);
         console.log(res.data)
         getInstitutes(res.data);
       } catch (error) {
@@ -79,7 +79,7 @@ function CreateStudent() {
     const fetchInstitute = async () => {
       if (institute) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${institute}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/aI/${institute}`);
           console.log(res.data[0])
           getInstitutesname(res.data[0]);
         } catch (error) {
@@ -110,7 +110,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryins) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${searchQueryins}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/institute/aI/${searchQueryins}`);
           console.log(res.data[0])
           getInstitutesname2(res.data[0]);
         } catch (error) {
@@ -133,7 +133,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname2._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/allD/${Institutesname2._id}`);
           console.log(res)
           getdepartement2(res.data);
         } catch (error) {
@@ -159,7 +159,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/allD/${Institutesname._id}`);
           console.log(res)
           getdepartement(res.data);
         } catch (error) {
@@ -196,7 +196,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (Department || Department !== 'select') {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${Department}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/aD/${Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -222,7 +222,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryD) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${searchQueryD}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/department/aD/${searchQueryD}`);
           console.log(res.data[0])
           getdepartementname2(res.data[0]);
         } catch (error) {
@@ -251,7 +251,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname2._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/allS/${departementname2._id}`);
           console.log(res)
           setSpecializatione2(res.data);
         } catch (error) {
@@ -281,7 +281,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/allS/${departementname._id}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -312,7 +312,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (specialization) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${specialization}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/aS/${specialization}`);
           console.log(res.data[0])
           setSpecializationename(res.data[0]);
         } catch (error) {
@@ -339,7 +339,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (specializationename._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/level/alllev/${specializationename._id}`);
           console.log(res.data)
           setlevele(res.data);
         } catch (error) {
@@ -370,7 +370,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryS) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${searchQueryS}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/specialization/aS/${searchQueryS}`);
           console.log(res.data[0])
           setSpecializationename2(res.data[0]);
         } catch (error) {
@@ -393,7 +393,7 @@ useEffect(() => {
     const fetchinstitute = async () => {
       if (specializationename2._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename2._id}`);
+          const res = await axios.get(`https://jami3aty-api.onrender.com/api/level/alllev/${specializationename2._id}`);
           console.log(res.data)
           setlevele2(res.data);
         } catch (error) {
@@ -418,7 +418,7 @@ useEffect(() => {
 //get the studentes with livels
   const getUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8800/api/users/getUsersWithLevels');
+      const response = await axios.get('https://jami3aty-api.onrender.com/api/users/getUsersWithLevels');
       setUsers(response.data);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -522,7 +522,7 @@ useEffect(() => {
   // to update student 
   const handleUpdateUser = async (userId, updatedData) => {
     try {
-      await axios.put(`http://localhost:8800/api/users/update/${userId}`, updatedData);
+      await axios.put(`https://jami3aty-api.onrender.com/api/users/update/${userId}`, updatedData);
       alert('User updated successfully');
       getUsers(); // Refresh the user list
     } catch (error) {
@@ -540,7 +540,7 @@ useEffect(() => {
 // to delete student 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/delete/${userId}`);
+      await axios.delete(`https://jami3aty-api.onrender.com/api/users/delete/${userId}`);
       alert('User deleted successfully');
       getUsers(); // Refresh the user list
     } catch (error) {
