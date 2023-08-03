@@ -42,7 +42,9 @@ function AppUse() {
     }
   }, [isAuthenticated]);
 
-
+  if (!useres) {
+    return <div>Loading...</div>;
+  }
 
   // Now you can safely access useres properties
   return (
