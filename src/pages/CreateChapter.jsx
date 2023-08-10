@@ -285,7 +285,8 @@ function CreateChapter({ isLightMode }) {
                 <tr key={course._id}>
                   <td>
                     <div className="d-flex justify-content-between align-items-center ">
-                      <a href={course.file} className={isLightMode ? 'text-dark m-4 display-5' : 'text-light m-4 display-5 '}>{course.name}</a>
+                      <a  target="_blank"
+            rel="noopener" href={course.file} className={isLightMode ? 'text-dark m-4 display-5' : 'text-light m-4 display-5 '}>{course.name}</a>
                     </div>
                   </td>
                   <td></td>
