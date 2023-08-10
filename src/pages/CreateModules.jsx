@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { server } from '../server.js';
 function CreateModules({ isLightMode }) {
 
   const [modules, setModules] = useState([]);
@@ -20,7 +22,7 @@ function CreateModules({ isLightMode }) {
   const [specializationename, setSpecializationename] = useState([]);
   const [levele, setlevele] = useState([]);
 
-// for the page the teacher
+  // for the page the teacher
 
 
   // to get the user information 
@@ -28,7 +30,7 @@ function CreateModules({ isLightMode }) {
     const fetchinstitute = async () => {
       if (currentUser) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+          const res = await axios.get(`${server}/api/users/find/${currentUser}`);
           console.log(res)
           setUser(res.data);
         } catch (error) {
@@ -51,12 +53,12 @@ function CreateModules({ isLightMode }) {
 
 
 
-// to get the information to the departement (id_departement) with name of course
+  // to get the information to the departement (id_departement) with name of course
   useEffect(() => {
     const fetchInstitute = async () => {
       if (user.Department) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${user.Department}`);
+          const res = await axios.get(`${server}/api/department/aD/${user.Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -86,7 +88,7 @@ function CreateModules({ isLightMode }) {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname ? departementname._id : null}`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname ? departementname._id : null}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -119,7 +121,7 @@ function CreateModules({ isLightMode }) {
     const fetchInstitute = async () => {
       if (specialization) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${specialization}`);
+          const res = await axios.get(`${server}/api/specialization/aS/${specialization}`);
           console.log(res.data[0])
           setSpecializationename(res.data[0]);
         } catch (error) {
@@ -156,7 +158,7 @@ function CreateModules({ isLightMode }) {
     const fetchinstitute = async () => {
       if (specializationename._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename._id}`);
+          const res = await axios.get(`${server}/api/level/alllev/${specializationename._id}`);
           console.log(res.data)
           setlevele(res.data);
         } catch (error) {
@@ -183,11 +185,11 @@ function CreateModules({ isLightMode }) {
 
 
 
-// find the courses to affiche
+  // find the courses to affiche
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/find/${currentUser}`);
+        const res = await axios.get(`${server}/api/course/find/${currentUser}`);
         setCourses(res.data);
       } catch (error) {
         console.error(error);
@@ -209,38 +211,41 @@ function CreateModules({ isLightMode }) {
     if (newModule.trim() !== '' && level.trim() !== '' && specialization.trim() !== '') {
       try {
         if (selectedModule) {
-          await axios.put(`http://localhost:8800/api/course/update/${selectedModule._id}`, {
+          const res = axios.put(`${server}/api/course/update/${selectedModule._id}`, {
             name: newModule,
             level: level,
             specialization: specialization
-          });
-          alert('update module successfully');
+          })
 
-          setModules(modules.map(module => {
-            if (module._id === selectedModule._id) {
-              return {
-                ...module,
-                name: newModule,
-                level: level,
-                specialization: specialization
-              };
-            }
-            return module;
-          }));
+          await toast.promise(res, {
+            pending: 'Updating module ...',
+            success: 'Module updated successfully',
+            error: 'An error occurred while update the module .'
+          });
+
+
+          setModules([...modules, res.data]);
+
           setSelectedModule(null);
         } else {
-          const res = await axios.post(`http://localhost:8800/api/course/add/${currentUser}`, {
+          const res = axios.post(`${server}/api/course/add/${currentUser}`, {
             name: newModule,
             level: level,
             specialization: specialization
           });
+          await toast.promise(res, {
+            pending: 'Creating module ...',
+            success: 'Module creating successfully',
+            error: 'An error occurred while creating the module .'
+          });
+
+
           setModules([...modules, res.data]);
         }
-        alert('create module successfully');
         setNewModule('');
         setLevel('');
         setSpecialization('');
-      } catch (error) {
+       } catch (error) {
         console.error(error);
       }
     }
@@ -256,7 +261,11 @@ function CreateModules({ isLightMode }) {
 
   const handleDeleteModule = async (moduleId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/course/delete/${moduleId}`);
+      await toast.promise(axios.delete(`${server}/api/course/delete/${moduleId}`), {
+        pending: 'chapter Deleting ...',
+        success: 'chapter deleted successfully',
+        error: 'An error occurred while deleting the chapter .'
+      });
       setModules(modules.filter(module => module._id !== moduleId));
     } catch (error) {
       console.error(error);
@@ -285,11 +294,12 @@ function CreateModules({ isLightMode }) {
 
   const handleToggleCreateUser = () => {
     setShowCreateUser(!showCreateUser);
-    if(!showCreateUser){
-    setSelectedModule('');
-    setNewModule('');
-    setLevel('');
-    setSpecialization('');}
+    if (!showCreateUser) {
+      setSelectedModule('');
+      setNewModule('');
+      setLevel('');
+      setSpecialization('');
+    }
   };
 
 
@@ -336,6 +346,7 @@ function CreateModules({ isLightMode }) {
 
   return (
     <>
+      <ToastContainer/>
       <button
         type="button"
         className={`btn ${isLightMode ? 'btn-dark' : 'btn-light'} dropdown-toggle mt-4 mb-4`}
@@ -372,17 +383,17 @@ function CreateModules({ isLightMode }) {
                 </select>
               </div>
               <div className="mb-3">
-              <label htmlFor="specialization" className={`form-label ${isLightMode ? 'text-dark' : 'text-light'} `}>level:</label>
+                <label htmlFor="specialization" className={`form-label ${isLightMode ? 'text-dark' : 'text-light'} `}>level:</label>
 
-              <select class="form-control" onChange={(e) =>  setLevel(e.target.value)}>
-                <option value="">select levele</option>
-                {Array.isArray(levele) &&
-                  levele.map((levele) => (
-                    <option key={levele.id} value={levele.name}>
-                      {levele.name}
-                    </option>
-                  ))}
-              </select>
+                <select class="form-control" onChange={(e) => setLevel(e.target.value)}>
+                  <option value="">select levele</option>
+                  {Array.isArray(levele) &&
+                    levele.map((levele) => (
+                      <option key={levele.id} value={levele.name}>
+                        {levele.name}
+                      </option>
+                    ))}
+                </select>
               </div>
               <br />
               <button type="submit" className={`btn ${isLightMode ? 'btn-outline-dark' : 'btn-outline-light'} btn-lg`}>
@@ -438,7 +449,7 @@ function CreateModules({ isLightMode }) {
                     <button
                       type="button"
                       className={`btn ${isLightMode ? 'btn-dark' : 'btn-light'} btn-sm m-2 `}
-                      onClick={() =>{ handleModifyModule(course) }}
+                      onClick={() => { handleModifyModule(course) }}
                     >
                       Modify
                     </button>

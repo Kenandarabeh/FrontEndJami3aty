@@ -36,7 +36,7 @@ const Cards = ({ type, user, image, key }) => {
   return (
     <Link to={`/Teachers/${user._id}`} style={{ textDecoration: 'none' }}>
       <Container>
-        <Image src={`http://localhost:8800/${user.image.replace(/^.*[\\/]/, '')}`} alt="User" />
+        <Image src={user.image} alt="User" />
         <Details>
           <Texts>
             <Title>{ user.firstName }</Title>

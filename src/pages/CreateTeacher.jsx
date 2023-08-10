@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { server } from '../server.js';
 function CreateTeacher() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -44,7 +46,7 @@ function CreateTeacher() {
   useEffect(() => {
     const fetchinstitute = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/institute/allI`);
+        const res = await axios.get(`${server}/api/institute/allI`);
         console.log(res.data)
         getInstitutes(res.data);
       } catch (error) {
@@ -62,12 +64,12 @@ function CreateTeacher() {
 
 
 
-// get the information of the institute selected(id institute)
+  // get the information of the institute selected(id institute)
   useEffect(() => {
     const fetchInstitute = async () => {
       if (institute) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${institute}`);
+          const res = await axios.get(`${server}/api/institute/aI/${institute}`);
           console.log(res.data[0])
           getInstitutesname(res.data[0]);
         } catch (error) {
@@ -88,12 +90,12 @@ function CreateTeacher() {
 
 
 
-// get the information of the institute selected(id institute) --- of the liste
+  // get the information of the institute selected(id institute) --- of the liste
   useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryins) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${searchQueryins}`);
+          const res = await axios.get(`${server}/api/institute/aI/${searchQueryins}`);
           console.log(res.data[0])
           getInstitutesname2(res.data[0]);
         } catch (error) {
@@ -111,12 +113,12 @@ function CreateTeacher() {
 
 
 
-// get the departement fo the institute selected  ---of the liste 
+  // get the departement fo the institute selected  ---of the liste 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname2._id}`);
+          const res = await axios.get(`${server}/api/department/allD/${Institutesname2._id}`);
           console.log(res)
           getdepartement2(res.data);
         } catch (error) {
@@ -134,12 +136,12 @@ function CreateTeacher() {
 
 
 
-// get all the departement of institute selected
+  // get all the departement of institute selected
   useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname._id}`);
+          const res = await axios.get(`${server}/api/department/allD/${Institutesname._id}`);
           console.log(res)
           getdepartement(res.data);
         } catch (error) {
@@ -170,7 +172,7 @@ function CreateTeacher() {
     const fetchInstitute = async () => {
       if (Department || Department !== 'select') {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${Department}`);
+          const res = await axios.get(`${server}/api/department/aD/${Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -193,12 +195,12 @@ function CreateTeacher() {
 
 
 
-// get the information of the departement selected ---of list
+  // get the information of the departement selected ---of list
   useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryD) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${searchQueryD}`);
+          const res = await axios.get(`${server}/api/department/aD/${searchQueryD}`);
           console.log(res.data[0])
           getdepartementname2(res.data[0]);
         } catch (error) {
@@ -213,12 +215,12 @@ function CreateTeacher() {
 
 
 
-// get all spcializaiton of the departement selected ---of list
+  // get all spcializaiton of the departement selected ---of list
   useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname2._id}`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname2._id}`);
           console.log(res)
           setSpecializatione2(res.data);
         } catch (error) {
@@ -234,12 +236,12 @@ function CreateTeacher() {
 
 
 
-// get all spcializaiton of the departement selected 
+  // get all spcializaiton of the departement selected 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${ departementname._id }`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname._id}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -254,9 +256,9 @@ function CreateTeacher() {
 
 
 
-  
 
-// to work the get the studentes with livel
+
+  // to work the get the studentes with livel
   useEffect(() => {
     getUsers();
   }, []);
@@ -264,10 +266,10 @@ function CreateTeacher() {
 
 
 
-// to work the get the usters(teachers)
+  // to work the get the usters(teachers)
   const getUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8800/api/users/findAll');
+      const response = await axios.get(`${server}/api/users/findAll`);
       setUsers(response.data);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -280,7 +282,7 @@ function CreateTeacher() {
 
 
 
-// to create teacher
+  // to create teacher
   const handleCreateUser = async (e) => {
     e.preventDefault();
     if (!firstName) {
@@ -332,17 +334,25 @@ function CreateTeacher() {
       formData.append('institute', institute);
       formData.append('Department', Department);
       formData.append('specialization', specialization);
-        formData.append('description', description);
+      formData.append('description', description);
 
       // Check if there is a selected user (for updating) or create a new user
       if (selectedUser) {
         await handleUpdateUser(selectedUser._id, formData);
       } else {
-        await axios.post('http://localhost:8800/api/auth/signup', formData);
-        alert('User created successfully');
+        await toast.promise(
+          axios.post(`${server}/api/auth/signup`, formData),
+          {
+            pending: 'Creating teacher...',
+            success: 'Teacher created successfully',
+            error: 'An error occurred while creating the teacher.'
+          }
+        );
+
       }
 
       // Refresh the user list
+      // After successful deletion, refresh the user list
       getUsers();
 
       // Clear input fields
@@ -375,9 +385,20 @@ function CreateTeacher() {
   // to update teacher 
   const handleUpdateUser = async (userId, updatedData) => {
     try {
-      await axios.put(`http://localhost:8800/api/users/update/${userId}`, updatedData);
-      alert('User updated successfully');
-      getUsers(); // Refresh the user list
+      // Display toast while updating user
+      await toast.promise(
+        axios.put(`${server}/api/users/update/${userId}`, updatedData),
+        {
+          pending: 'Updating teacher...',
+          success: 'Teacher updated successfully',
+          error: 'An error occurred while updating the teacher.'
+          ,style:{
+            '--toastify-color-success': 'dark'          }
+        }
+      );
+
+      // Refresh the user list
+      getUsers();// Refresh the user list
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
@@ -395,13 +416,16 @@ function CreateTeacher() {
 
 
 
-  
 
-// to delete teacher
+
+  // to delete teacher
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/delete/${userId}`);
-      alert('User deleted successfully');
+      await toast.promise(axios.delete(`${server}/api/users/delete/${userId}`), {
+        pending: 'Deleting teacher ...',
+        success: 'Teacher deleted successfully',
+        error: 'An error occurred while deleting the teacher.'
+      });
       getUsers(); // Refresh the user list
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -459,8 +483,8 @@ function CreateTeacher() {
     setDepartment(user.Department);
     setSpecialization(user.specialization);
     // Set other fields based on user role
-      setDescription(user.Description);
-    
+    setDescription(user.Description);
+
     // Clear the image field
     setImage(null);
     setShowForm(true);
@@ -473,6 +497,7 @@ function CreateTeacher() {
 
   return (
     <>
+      <ToastContainer />
       <div className="container">
         <div className="mb-3">
 
@@ -555,7 +580,7 @@ function CreateTeacher() {
                   </label>
 
                   <select class="form-control" onChange={(e) => setInstitute(e.target.value)}>
-                  <option value="">Select an option</option>
+                    <option value="">Select an option</option>
                     {Array.isArray(Institutes) &&
                       Institutes.map((institute) => (
                         <option key={institute.id} value={institute.name}>
@@ -572,7 +597,7 @@ function CreateTeacher() {
 
                 </div>
                 <select class="form-control" onChange={(e) => setDepartment(e.target.value)}>
-                <option value="">Select an option</option>
+                  <option value="">Select an option</option>
                   {Array.isArray(departement) &&
                     departement.map((department) => (
                       <option key={department.id} value={department.name}>
@@ -588,7 +613,7 @@ function CreateTeacher() {
 
                 </div>
                 <select class="form-control" onChange={(e) => setSpecialization(e.target.value)}>
-                <option value="">Select an option</option>
+                  <option value="">Select an option</option>
 
                   {Array.isArray(specializatione) &&
                     specializatione.map((specializatione) => (
@@ -602,7 +627,7 @@ function CreateTeacher() {
 
 
               {/* ----------------------------------------------- */}
-         
+
 
               <div className="mb-3">
                 <label htmlFor="description" className="form-label" style={{ color: 'black' }}>
@@ -651,7 +676,7 @@ function CreateTeacher() {
           <table class="table">
             <thead>
               <tr>
-      <th scope="col">
+                <th scope="col">
 
                   <select class="form-control" onChange={(e) => setSearchQueryIns(e.target.value)}>
                     <option value="">institute</option>
@@ -713,12 +738,9 @@ function CreateTeacher() {
                     <td>{user.role}</td>
                     <td>
                       <img
-                        src={`http://localhost:8800/${user.image.replace(
-                          /^.*[\\/]/,
-                          ''
-                        )}`}
+                        src={user.image}
                         alt={user.firstName}
-                        style={{ width: '50px', height: '50px', objectFit: 'cover',borderRadius:'50%' }}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }}
                       />
                     </td>
                     <td>

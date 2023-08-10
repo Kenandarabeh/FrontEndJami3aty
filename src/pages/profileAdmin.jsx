@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import Teachers from './Teachers';
+import { server } from '../server';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Container = styled.div`
   display: flex;
@@ -91,7 +94,7 @@ const ProfileAdmin = ({ isLightMode }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+                const res = await axios.get(`${server}/api/users/find/${currentUser}`);
                 setUser(res.data);
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -100,7 +103,7 @@ const ProfileAdmin = ({ isLightMode }) => {
 
         const fetchTeacher = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/teacher/getTeachers/${currentUser}`);
+                const res = await axios.get(`${server}/api/teacher/getTeachers/${currentUser}`);
                 setTeacher(res.data[0]);
             } catch (error) {
                 console.error('Error fetching student:', error);
@@ -140,10 +143,17 @@ const ProfileAdmin = ({ isLightMode }) => {
             formData.append('description', description);
 
             // Send the update request
-            await axios.put(`http://localhost:8800/api/users/update/${currentUser}`, formData);
-            alert('User update successfully');
+            
+            await toast.promise(
+                axios.put(`${server}/api/users/update/${currentUser}`, formData),
+                {
+                  pending: 'Updating profile...',
+                  success: 'Profile updated successfully',
+                  error: 'An error occurred while updating the profile.'
+                }
+              );
             // Refresh user data after update
-            const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
+            const res = await axios.get(`${server}/api/users/find/${currentUser}`);
             setUser(res.data);
        } } catch (error) {
             console.error('Error updating user information:', error);
@@ -172,7 +182,8 @@ const ProfileAdmin = ({ isLightMode }) => {
         }
     };
 
-    return (
+    return (<>
+        <ToastContainer/>
         <Container>
             <Content>
                 <Title>Profile Admin</Title>
@@ -286,10 +297,11 @@ const ProfileAdmin = ({ isLightMode }) => {
             </Content>
             {user.image ? (
                 <Recommendation>
-                    <Img src={`http://localhost:8800/${user.image.replace(/^.*[\\/]/, '')}`} />
+                    <Img src={`${user.image}`} />
                 </Recommendation>
             ) : null}
         </Container>
+        </>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { server } from '../server';
 
 const Container = styled.div`
   display: flex;
@@ -82,7 +83,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchCourses = async () => {
-            const res = await axios.get(`http://localhost:8800/api/course/find/${IdT}`);
+            const res = await axios.get(`${server}/api/course/find/${IdT}`);
             setCourses(res.data);
         };
 
@@ -98,7 +99,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchTeacher = async () => {
-            const helf = await axios.get(`http://localhost:8800/api/teacher/getTeachers/${IdT}`);
+            const helf = await axios.get(`${server}/api/teacher/getTeachers/${IdT}`);
 
             setLoading(helf.data[0]);
         };
@@ -117,7 +118,7 @@ const [loading, setLoading] = useState([]);
 
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axios.get(`http://localhost:8800/api/users/find/${IdT}`);
+            const res = await axios.get(`${server}/api/users/find/${IdT}`);
             setUser(res.data);
         };
 
@@ -159,7 +160,7 @@ const [loading, setLoading] = useState([]);
             </Content>
 
             <Recommendation>
-                {user.image ? <Img src={`http://localhost:8800/${user.image.replace(/^.*[\\/]/, '')}`} /> : null}
+                {user.image ? <Img src={user.image} /> : null}
             </Recommendation>
         </Container>
     );

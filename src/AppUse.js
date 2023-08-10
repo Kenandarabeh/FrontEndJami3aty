@@ -6,48 +6,73 @@ import { BrowserRouter } from 'react-router-dom';
 import axios from 'axios';
 import AppT from './AppT';
 import AppA from './AppA';
-
+import './index.css'
+import { server } from './server.js';
 function AppUse() {
-    const { currentUser, isAuthenticated } = useSelector(state => state.user);
-    const [useres, setuseres] = useState([]);
-// this for to take admin go to page admin take login go to the page admin take the student go to the page student 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            const res = await axios.get(`http://localhost:8800/api/users/find/${currentUser}`);
-            console.log(res.data);
-            setuseres(res.data);
-        };
+  const { currentUser, isAuthenticated } = useSelector(state => state.user);
+  const [useres, setuseres] = useState(null);
 
-        fetchCourses();
-    }, [currentUser]);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${server}/api/users/find/${currentUser}`);
+        setuseres(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-    const id_user = useSelector(state => state.user.id_user);
-    const dispatch = useDispatch();
+    fetchUser();
+  }, [currentUser]);
 
-    useEffect(() => {
-        const savedToken = localStorage.getItem('token');
-        if (savedToken) {
-            dispatch(setIsAuthenticated(true));
-        }
-    }, [dispatch]);
+  const id_user = useSelector(state => state.user.id_user);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (isAuthenticated) {
-            localStorage.setItem('token', 'access_token');
-        } else {
-            localStorage.removeItem('token');
-        }
-    }, [isAuthenticated]);
+  useEffect(() => {
+    const savedToken = localStorage.getItem('token');
+    if (savedToken) {
+      dispatch(setIsAuthenticated(true));
+    }
+  }, [dispatch]);
 
-    return (
-        <>
-            {useres && useres.role === 'teacher' ? (
-                <AppT id_user={id_user} />
-            ) : (useres.role==='admin'?
-                <AppA/>
-            :<App/>)}
-        </>
-    );
+  useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem('token', 'access_token');
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [isAuthenticated]);
+
+  // Check if useres is null before accessing its properties
+  if (!useres) {
+      return (
+        <div class="center">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+      </div>
+      );
+    }  
+
+  // Now you can safely access useres properties
+  return (
+    <>
+      {useres.role === 'teacher' ? (
+        <AppT id_user={id_user} />
+      ) : useres.role === 'admin' ? (
+        <AppA />
+      ) : (
+        <App />
+      )}
+    </>
+  );
 }
 
 export default AppUse;

@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Navbar from '../components/Navbar';
+import { ToastContainer, toast } from 'react-toastify';
+import {server} from '../server.js'
+import 'react-toastify/dist/ReactToastify.css';
 
 const Hr = styled.hr`
   margin: 15px 0px;
@@ -39,10 +42,10 @@ function CreateChapter({ isLightMode }) {
 
 
 
-//to get chpater 
+  //to get chpater 
   const fetchChapters = async () => {
     try {
-      const res = await axios.get(`http://localhost:8800/api/chapter/getChapter/${courseId}`);
+      const res = await axios.get(`${server}/api/chapter/getChapter/${courseId}`);
       setChapters(res.data);
     } catch (error) {
       console.error(error);
@@ -50,7 +53,7 @@ function CreateChapter({ isLightMode }) {
   };
 
 
-//to work the function 
+  //to work the function 
   useEffect(() => {
     fetchChapters();
   }, [courseId]);
@@ -67,7 +70,7 @@ function CreateChapter({ isLightMode }) {
 
 
 
-//to get file from the inpute 
+  //to get file from the inpute 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     setFile(selectedFile);
@@ -84,7 +87,7 @@ function CreateChapter({ isLightMode }) {
 
 
 
-// to create the chpater 
+  // to create the chpater 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -96,26 +99,27 @@ function CreateChapter({ isLightMode }) {
         alert('Please fill in all the required fields.');
         return;
       }
-      await axios.post(`http://localhost:8800/api/chapter/${courseId}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+
+      await toast.promise(axios.post(`${server}/api/chapter/${courseId}`, formData), {
+        pending: 'Creating chapter ...',
+        success: 'Chapter created successfully',
+        error: 'An error occurred while creating the chapter.'
       });
 
+
+
+
+      // Refresh the chapters list
+      fetchChapters();
       // Reset form fields
       setName('');
       setSrc('');
       setFile(null);
 
-      // Refresh the chapters list
-      fetchChapters();
-
       // Show success message or redirect to another page
-      alert('Chapter added successfully!');
     } catch (error) {
       console.error(error);
       // Show error message
-      alert('Failed to add chapter. Please try again.');
     }
   };
 
@@ -132,16 +136,18 @@ function CreateChapter({ isLightMode }) {
 
 
 
-// to delete the the chpater 
+  // to delete the the chpater 
   const handleDelete = async (chapterId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/chapter/delete/${chapterId}`);
-
+      await toast.promise(axios.delete(`${server}/api/chapter/delete/${chapterId}`), {
+        pending: 'chapter Deleting ...',
+        success: 'chapter deleted successfully',
+        error: 'An error occurred while deleting the chapter .'
+      });
       // Refresh the chapters list
       fetchChapters();
 
       // Show success message or redirect to another page
-      alert('Chapter deleted successfully!');
     } catch (error) {
       console.error(error);
       // Show error message
@@ -157,7 +163,7 @@ function CreateChapter({ isLightMode }) {
 
 
 
-// to search
+  // to search
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -173,7 +179,7 @@ function CreateChapter({ isLightMode }) {
 
 
 
-//search
+  //search
   const filteredChapters = chapters.filter((chapter) => {
     return chapter.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -195,6 +201,7 @@ function CreateChapter({ isLightMode }) {
 
   return (
     <>
+      <ToastContainer />
       <div class="card-body">
         <h3 className={` fw-normal ${isLightMode ? 'text-dark' : 'text-light'}`}> {nameM}</h3>
       </div>
@@ -205,7 +212,7 @@ function CreateChapter({ isLightMode }) {
           Create Chapter
         </h1>
         <br />
-      
+
         <form onSubmit={handleSubmit}>
           {/* Form fields */}
           <div className="mb-3">
@@ -258,15 +265,13 @@ function CreateChapter({ isLightMode }) {
           />
         </div>
         <div
-          className={`table-responsive ${isLightMode ? null : 'bg-dark'} ${
-            isLightMode ? 'table-light' : 'table-dark'
-          }`}
+          className={`table-responsive ${isLightMode ? null : 'bg-dark'} ${isLightMode ? 'table-light' : 'table-dark'
+            }`}
           style={{ borderRadius: '20px' }}
         >
           <table
-            className={`table table-borderless table-striped ${
-              isLightMode ? 'table-light' : 'table-dark'
-            }`}
+            className={`table table-borderless table-striped ${isLightMode ? 'table-light' : 'table-dark'
+              }`}
           >
             <thead className={isLightMode ? 'bg-light' : 'bg-dark'}>
               <tr>
@@ -280,7 +285,7 @@ function CreateChapter({ isLightMode }) {
                 <tr key={course._id}>
                   <td>
                     <div className="d-flex justify-content-between align-items-center ">
-                      <h3 className={isLightMode ? 'text-dark m-4' : 'text-light m-4'}>{course.name}</h3>
+                      <a href={course.file} className={isLightMode ? 'text-dark m-4 display-5' : 'text-light m-4 display-5 '}>{course.name}</a>
                     </div>
                   </td>
                   <td></td>

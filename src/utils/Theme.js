@@ -21,3 +21,4 @@ text:"black",
 textSoft:"606060",
 soft:"#f5f5f5"
   }
+ 

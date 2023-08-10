@@ -4,6 +4,9 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { server } from '../server.js';
 const Hr = styled.hr`
   margin: 15px 0px;
   border: 3px solid gray;
@@ -28,7 +31,7 @@ function CreateModules2({ isLightMode }) {
   const [specializationename, setSpecializationename] = useState([]);
   const [levele, setlevele] = useState([]);
 
-// to page admin
+  // to page admin
 
 
   // to get the user information 
@@ -36,7 +39,7 @@ function CreateModules2({ isLightMode }) {
     const fetchinstitute = async () => {
       if (userId) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/users/find/${userId}`);
+          const res = await axios.get(`${server}/api/users/find/${userId}`);
           console.log(res)
           setUser(res.data);
         } catch (error) {
@@ -55,12 +58,12 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// to get the information to the departement (id_departement) with name of course
+  // to get the information to the departement (id_departement) with name of course
   useEffect(() => {
     const fetchInstitute = async () => {
       if (user.Department) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${user.Department}`);
+          const res = await axios.get(`${server}/api/department/aD/${user.Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -93,7 +96,7 @@ function CreateModules2({ isLightMode }) {
     const fetchInstitute = async () => {
       if (specialization) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${specialization}`);
+          const res = await axios.get(`${server}/api/specialization/aS/${specialization}`);
           console.log(res.data[0])
           setSpecializationename(res.data[0]);
         } catch (error) {
@@ -122,7 +125,7 @@ function CreateModules2({ isLightMode }) {
     const fetchinstitute = async () => {
       if (specializationename._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename._id}`);
+          const res = await axios.get(`${server}/api/level/alllev/${specializationename._id}`);
           console.log(res.data)
           setlevele(res.data);
         } catch (error) {
@@ -141,13 +144,13 @@ function CreateModules2({ isLightMode }) {
 
 
 
-  
+
   // get all the specializaiton of the deprtement of user
   useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname ? departementname._id : null}`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname ? departementname._id : null}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -176,7 +179,7 @@ function CreateModules2({ isLightMode }) {
     const fetchCourses = async () => {
 
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/find/${userId}`);
+        const res = await axios.get(`${server}/api/course/find/${userId}`);
         setCourses(res.data);
       } catch (error) {
         console.error(error);
@@ -196,35 +199,41 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// update course 
+  // update course 
   const handleAddModule = async (e) => {
     e.preventDefault();
     if (newModule.trim() !== '' && level.trim() !== '' && specialization.trim() !== '') {
       try {
         if (selectedModule) {
-          await axios.put(`http://localhost:8800/api/course/update/${selectedModule._id}`, {
+          const res = axios.put(`${server}/api/course/update/${selectedModule._id}`, {
             name: newModule,
             level: level,
             specialization: specialization
+          })
+
+          await toast.promise(res, {
+            pending: 'Updating module ...',
+            success: 'Module updated successfully',
+            error: 'An error occurred while update the module .'
           });
-          setModules(modules.map(module => {
-            if (module._id === selectedModule._id) {
-              return {
-                ...module,
-                name: newModule,
-                level: level,
-                specialization: specialization
-              };
-            }
-            return module;
-          }));
+
+
+          setModules([...modules, res.data]);
+
           setSelectedModule(null);
         } else {
-          const res = await axios.post(`http://localhost:8800/api/course/add/${userId}`, {
+          const res = axios.post(`${server}/api/course/add/${userId}`, {
             name: newModule,
             level: level,
             specialization: specialization
           });
+          await toast.promise(res, {
+            pending: 'Creating module ...',
+            success: 'Module creating successfully',
+            error: 'An error occurred while creating the module .'
+          });
+
+
           setModules([...modules, res.data]);
         }
         setNewModule('');
@@ -242,11 +251,14 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// delete course 
+  // delete course 
   const handleDeleteModule = async (moduleId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/course/delete/${moduleId}`);
-      setModules(modules.filter(module => module._id !== moduleId));
+      await toast.promise(axios.delete(`${server}/api/course/delete/${moduleId}`), {
+        pending: 'chapter Deleting ...',
+        success: 'chapter deleted successfully',
+        error: 'An error occurred while deleting the chapter .'
+      }); setModules(modules.filter(module => module._id !== moduleId));
     } catch (error) {
       console.error(error);
     }
@@ -257,7 +269,7 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// serche of the courses
+  // serche of the courses
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
@@ -265,7 +277,7 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// to button create course when i click in the button create course the the form appaire and the oposite 
+  // to button create course when i click in the button create course the the form appaire and the oposite 
   const handleToggleCreateUser = () => {
     setShowCreateUser(!showCreateUser);
     if (!showCreateUser) {
@@ -283,7 +295,7 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// to serche of the user 
+  // to serche of the user 
   const filteredCourses = courses.filter((course) => {
     return course.name.toLowerCase().includes(searchTerm.toLowerCase());
   });
@@ -294,7 +306,7 @@ function CreateModules2({ isLightMode }) {
 
 
 
-// when i click in modify the valeur go to the input
+  // when i click in modify the valeur go to the input
   const handleModifyModule = async (course) => {
     setSelectedModule(course);
     setNewModule(course.name);
@@ -314,10 +326,11 @@ function CreateModules2({ isLightMode }) {
 
 
 
-  
+
   return (
     <>
-<div class="card-body">
+      <ToastContainer></ToastContainer>
+      <div class="card-body">
         <h3 className={` fw-normal text-dark`}> {nameT}</h3>
       </div>
       <Hr />
@@ -357,19 +370,19 @@ function CreateModules2({ isLightMode }) {
                 </select>
               </div>
               <div className="mb-3">
-              <label htmlFor="specialization" className={`form-label text-dark `}>level:</label>
+                <label htmlFor="specialization" className={`form-label text-dark `}>level:</label>
 
-              <select class="form-control" onChange={(e) =>  setLevel(e.target.value)}>
-                <option value="">select levele</option>
-                {Array.isArray(levele) &&
-                  levele.map((levele) => (
-                    <option key={levele.id} value={levele.name}>
-                      {levele.name}
-                    </option>
-                  ))}
-              </select>
+                <select class="form-control" onChange={(e) => setLevel(e.target.value)}>
+                  <option value="">select levele</option>
+                  {Array.isArray(levele) &&
+                    levele.map((levele) => (
+                      <option key={levele.id} value={levele.name}>
+                        {levele.name}
+                      </option>
+                    ))}
+                </select>
               </div>
-             
+
               <br />
               <button type="submit" className={`btn btn-outline-dark btn-lg`}>
                 {selectedModule ? 'Modify Module' : 'Add Module'}

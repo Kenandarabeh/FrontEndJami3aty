@@ -11,6 +11,7 @@ import {
 } from "../../../redux/userslice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import { server } from "../../../server";
 export const Contact = () => {
   const [username, setUsername] = useState("");
   const [errorMessages, setErrorMessages] = useState({});
@@ -32,7 +33,7 @@ export const Contact = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post(  "http://localhost:8800/api/auth/signin",
+      const res = await axios.post(  `${server}/api/auth/signin`,
         { email, password }
       );
       const userId = res.data._id;

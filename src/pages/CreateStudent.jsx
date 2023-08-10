@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import '../index.css'
+import { server } from '../server.js';
 function CreateStudent() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [createError, setCreateError] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -47,7 +54,7 @@ function CreateStudent() {
   useEffect(() => {
     const fetchinstitute = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/institute/allI`);
+        const res = await axios.get(`${server}/api/institute/allI`);
         console.log(res.data)
         getInstitutes(res.data);
       } catch (error) {
@@ -61,6 +68,65 @@ function CreateStudent() {
     fetchinstitute();
   }, []);
 
+  const styles = `
+  body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #000;
+  }
+  .wave {
+    width: 5px;
+    height: 100px;
+    background: #ff581a;
+    margin: 10px;
+    animation: wave 1s linear infinite;
+    border-radius: 20px;
+  }
+  .wave:nth-child(2) {
+    animation-delay: 0.1s;
+  }
+  .wave:nth-child(3) {
+    animation-delay: 0.2s;
+  }
+  .wave:nth-child(4) {
+    animation-delay: 0.3s;
+  }
+  .wave:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .wave:nth-child(6) {
+    animation-delay: 0.5s;
+  }
+  .wave:nth-child(7) {
+    animation-delay: 0.6s;
+  }
+  .wave:nth-child(8) {
+    animation-delay: 0.7s;
+  }
+  .wave:nth-child(9) {
+    animation-delay: 0.8s;
+  }
+  .wave:nth-child(10) {
+    animation-delay: 0.9s;
+  }
+  
+  @keyframes wave {
+    0% {
+      transform: scale(0);
+    }
+    50% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+`;
 
 
 
@@ -73,13 +139,12 @@ function CreateStudent() {
 
 
 
-
-// get the information of the institute selected(id institute)
+  // get the information of the institute selected(id institute)
   useEffect(() => {
     const fetchInstitute = async () => {
       if (institute) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${institute}`);
+          const res = await axios.get(`${server}/api/institute/aI/${institute}`);
           console.log(res.data[0])
           getInstitutesname(res.data[0]);
         } catch (error) {
@@ -105,12 +170,12 @@ function CreateStudent() {
 
 
 
-// get the information of the institute selected(id institute) --- of the liste 
-useEffect(() => {
+  // get the information of the institute selected(id institute) --- of the liste 
+  useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryins) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/institute/aI/${searchQueryins}`);
+          const res = await axios.get(`${server}/api/institute/aI/${searchQueryins}`);
           console.log(res.data[0])
           getInstitutesname2(res.data[0]);
         } catch (error) {
@@ -128,12 +193,12 @@ useEffect(() => {
 
 
 
-// get the departement fo the institute selected  ---of the liste 
+  // get the departement fo the institute selected  ---of the liste 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname2._id}`);
+          const res = await axios.get(`${server}/api/department/allD/${Institutesname2._id}`);
           console.log(res)
           getdepartement2(res.data);
         } catch (error) {
@@ -154,12 +219,12 @@ useEffect(() => {
 
 
 
-// get all the departement of institute selected
+  // get all the departement of institute selected
   useEffect(() => {
     const fetchinstitute = async () => {
       if (Institutesname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/allD/${Institutesname._id}`);
+          const res = await axios.get(`${server}/api/department/allD/${Institutesname._id}`);
           console.log(res)
           getdepartement(res.data);
         } catch (error) {
@@ -196,7 +261,7 @@ useEffect(() => {
     const fetchInstitute = async () => {
       if (Department || Department !== 'select') {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${Department}`);
+          const res = await axios.get(`${server}/api/department/aD/${Department}`);
           console.log(res.data[0])
           getdepartementname(res.data[0]);
         } catch (error) {
@@ -217,12 +282,12 @@ useEffect(() => {
 
 
 
-// get the information of the departement selected ---of list
+  // get the information of the departement selected ---of list
   useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryD) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/department/aD/${searchQueryD}`);
+          const res = await axios.get(`${server}/api/department/aD/${searchQueryD}`);
           console.log(res.data[0])
           getdepartementname2(res.data[0]);
         } catch (error) {
@@ -246,12 +311,12 @@ useEffect(() => {
 
 
 
-// get all spcializaiton of the departement selected ---of list
+  // get all spcializaiton of the departement selected ---of list
   useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname2) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname2._id}`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname2._id}`);
           console.log(res)
           setSpecializatione2(res.data);
         } catch (error) {
@@ -276,12 +341,12 @@ useEffect(() => {
 
 
 
-// get all spcializaiton of the departement selected 
+  // get all spcializaiton of the departement selected 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (departementname) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/allS/${departementname._id}`);
+          const res = await axios.get(`${server}/api/specialization/allS/${departementname._id}`);
           console.log(res)
           setSpecializatione(res.data);
         } catch (error) {
@@ -307,12 +372,12 @@ useEffect(() => {
 
 
 
-//get the informamtion of the specialization selec
+  //get the informamtion of the specialization selec
   useEffect(() => {
     const fetchInstitute = async () => {
       if (specialization) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${specialization}`);
+          const res = await axios.get(`${server}/api/specialization/aS/${specialization}`);
           console.log(res.data[0])
           setSpecializationename(res.data[0]);
         } catch (error) {
@@ -334,12 +399,12 @@ useEffect(() => {
 
 
 
-//  get all the level in spicialiaiont selected 
+  //  get all the level in spicialiaiont selected 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (specializationename._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename._id}`);
+          const res = await axios.get(`${server}/api/level/alllev/${specializationename._id}`);
           console.log(res.data)
           setlevele(res.data);
         } catch (error) {
@@ -364,13 +429,13 @@ useEffect(() => {
 
 
 
-//get the informamtion of the specialization selec ---lf liste
+  //get the informamtion of the specialization selec ---lf liste
 
   useEffect(() => {
     const fetchInstitute = async () => {
       if (searchQueryS) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/specialization/aS/${searchQueryS}`);
+          const res = await axios.get(`${server}/api/specialization/aS/${searchQueryS}`);
           console.log(res.data[0])
           setSpecializationename2(res.data[0]);
         } catch (error) {
@@ -387,13 +452,13 @@ useEffect(() => {
 
 
 
-//  get all the level in spicialiaiont selected ---of liste
+  //  get all the level in spicialiaiont selected ---of liste
 
   useEffect(() => {
     const fetchinstitute = async () => {
       if (specializationename2._id) {
         try {
-          const res = await axios.get(`http://localhost:8800/api/level/alllev/${specializationename2._id}`);
+          const res = await axios.get(`${server}/api/level/alllev/${specializationename2._id}`);
           console.log(res.data)
           setlevele2(res.data);
         } catch (error) {
@@ -415,10 +480,10 @@ useEffect(() => {
 
 
 
-//get the studentes with livels
+  //get the studentes with livels
   const getUsers = async () => {
     try {
-      const response = await axios.get('http://localhost:8800/api/users/getUsersWithLevels');
+      const response = await axios.get(`${server}/api/users/getUsersWithLevels`);
       setUsers(response.data);
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
@@ -430,16 +495,17 @@ useEffect(() => {
   };
 
 
-// to work the get the studentes with livel
+  // to work the get the studentes with livel
   useEffect(() => {
     getUsers();
   }, []);
 
 
 
-// to create student
+  // to create student
   const handleCreateUser = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!firstName) {
       setErrorMessage('Please fill in firstName required fields.');
       return;
@@ -490,13 +556,24 @@ useEffect(() => {
       if (selectedUser) {
         await handleUpdateUser(selectedUser._id, formData);
       } else {
-        await axios.post('http://localhost:8800/api/auth/signup', formData);
-        alert('User created successfully');
+        await toast.promise(
+          axios.post(`${server}/api/auth/signup`, formData),
+          {
+            pending: 'Creating student...',
+            success: 'Student created successfully',
+            error: 'An error occurred while creating the student.'
+            , style: {
+              background: 'orange', // Set the background color to orange
+              color: 'white' // Set the text color to white
+            }
+          }
+        );
+
       }
 
       // Refresh the user list
-      getUsers();
-
+      // After successful deletion, refresh the user list
+      getUsers(); // Refresh the user list after successful deletion
       // Clear input fields
       setFirstName('');
       setLastName('');
@@ -508,10 +585,11 @@ useEffect(() => {
       setSelectedUser(null); // Reset selected user after creating/updating
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
-        setErrorMessage(error.response.data.message);
+        setCreateError(error.response.data.message);
       } else {
-        setErrorMessage('An error occurred while creating/updating the user.');
+        setCreateError('An error occurred while creating/updating the user.');
       }
+      setIsLoading(false); // Turn off loading state
     }
   };
 
@@ -521,10 +599,20 @@ useEffect(() => {
 
   // to update student 
   const handleUpdateUser = async (userId, updatedData) => {
+    setIsLoading(true);
     try {
-      await axios.put(`http://localhost:8800/api/users/update/${userId}`, updatedData);
-      alert('User updated successfully');
-      getUsers(); // Refresh the user list
+      // Display toast while updating user
+      await toast.promise(
+        axios.put(`${server}/api/users/update/${userId}`, updatedData),
+        {
+          pending: 'Updating student...',
+          success: 'Student updated successfully',
+          error: 'An error occurred while updating the student.'
+        }
+      );
+
+      // Refresh the user list
+      getUsers();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
@@ -532,28 +620,36 @@ useEffect(() => {
         setErrorMessage('An error occurred while updating the user.');
       }
     }
+    setIsLoading(false); // Turn off loading state
   };
 
 
 
 
-// to delete student 
+  // to delete student 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`http://localhost:8800/api/users/delete/${userId}`);
-      alert('User deleted successfully');
-      getUsers(); // Refresh the user list
+
+      await toast.promise(axios.delete(`${server}/api/users/delete/${userId}`), {
+        pending: 'Deleting student...',
+        success: 'Student deleted successfully',
+        error: 'An error occurred while deleting the student.'
+
+      });
+
+      // Await the deletion process
+
+      // Update the user list immediately
+      getUsers();
     } catch (error) {
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
       } else {
         setErrorMessage('An error occurred while deleting the user.');
       }
+      toast.error('An error occurred while deleting the user.');
     }
   };
-
-
-
 
 
 
@@ -563,8 +659,8 @@ useEffect(() => {
     const userD = user.Department.toLowerCase();
     const userS = user.specialization.toLowerCase();
     const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-     const userlevel=`${user.level}`.toLowerCase();
-    return fullName.includes(searchQuery.toLowerCase()) && userInstitution.includes(searchQueryins.toLowerCase()) && userD.includes(searchQueryD.toLowerCase()) && userS.includes(searchQueryS.toLowerCase())&&userD.includes(searchQueryD.toLowerCase()) && userlevel.includes(searchQueryLev.toLowerCase())
+    const userlevel = `${user.level}`.toLowerCase();
+    return fullName.includes(searchQuery.toLowerCase()) && userInstitution.includes(searchQueryins.toLowerCase()) && userD.includes(searchQueryD.toLowerCase()) && userS.includes(searchQueryS.toLowerCase()) && userD.includes(searchQueryD.toLowerCase()) && userlevel.includes(searchQueryLev.toLowerCase())
   });
 
 
@@ -621,6 +717,9 @@ useEffect(() => {
 
   return (
     <>
+
+      <ToastContainer />
+
       <div className="container">
         <div className="mb-3">
 
@@ -703,7 +802,7 @@ useEffect(() => {
                   </label>
 
                   <select class="form-control" onChange={(e) => setInstitute(e.target.value)}>
-                  <option value="">Select an option</option>
+                    <option value="">Select an option</option>
 
                     {Array.isArray(Institutes) &&
                       Institutes.map((institute) => (
@@ -722,7 +821,7 @@ useEffect(() => {
 
                 </div>
                 <select class="form-control" onChange={(e) => setDepartment(e.target.value)}>
-                <option value="">Select an option</option>
+                  <option value="">Select an option</option>
 
                   {Array.isArray(departement) &&
                     departement.map((department) => (
@@ -740,7 +839,7 @@ useEffect(() => {
 
                 </div>
                 <select class="form-control" onChange={(e) => setSpecialization(e.target.value)}>
-                <option value="">Select an option</option>
+                  <option value="">Select an option</option>
                   {Array.isArray(specializatione) &&
                     specializatione.map((specializatione) => (
                       <option key={specializatione.id} value={specializatione.name}>
@@ -758,7 +857,7 @@ useEffect(() => {
 
               </div>
               <select class="form-control" onChange={(e) => setlevel(e.target.value)}>
-              <option value="">Select an option</option>
+                <option value="">Select an option</option>
 
                 {Array.isArray(levele) &&
                   levele.map((levele) => (
@@ -779,7 +878,7 @@ useEffect(() => {
                 <label htmlFor="image" className="form-label" style={{ color: 'black' }}>
                   Image:
                 </label>
-              
+
                 <input
                   type="file"
                   id="image"
@@ -893,12 +992,9 @@ useEffect(() => {
                     <td>{user.role}</td>
                     <td>
                       <img
-                        src={`http://localhost:8800/${user.image.replace(
-                          /^.*[\\/]/,
-                          ''
-                        )}`}
+                        src={user.image}
                         alt={user.firstName}
-                        style={{ width: '50px', height: '50px', objectFit: 'cover' ,borderRadius:'50%'}}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '50%' }}
                       />
 
                     </td>
@@ -916,7 +1012,7 @@ useEffect(() => {
                       >
                         Delete
                       </button>
-                      
+
                       {user.role === 'teacher' ?
                         <Link to={`/createModules/${user._id}/${user.firstName + " " + user.lastName}`} style={{ textDecoration: "none" }}>
                           <button type="button" className="btn btn-light" style={{ backgroundColor: '#ff581a', color: 'white' }}>

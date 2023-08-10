@@ -4,6 +4,7 @@ import { Link, useParams } from 'react-router-dom';
 import { download } from 'downloadjs';
 import "bootstrap/dist/css/bootstrap.min.css";
 import styled from 'styled-components';
+import { server } from '../server';
 
 const Container = styled.div`
     display: flex;
@@ -70,11 +71,11 @@ const Modules = ({ isLightMode }) => {
 
 
 
- // get the chpater of the course selecred  
+  // get the chpater of the course selecred  
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/chapter/getChapter/${courseId}`);
+        const res = await axios.get(`${server}/api/chapter/getChapter/${courseId}`);
         setCourses(res.data);
       } catch (error) {
         console.error(error);
@@ -88,11 +89,11 @@ const Modules = ({ isLightMode }) => {
 
 
 
-// get the information of the course 
+  // get the information of the course 
   useEffect(() => {
     const fetchChapter = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/course/findById/${courseId}`);
+        const res = await axios.get(`${server}/api/course/findById/${courseId}`);
         console.log(res.data);
         setChapter(res.data[0]);
       } catch (error) {
@@ -110,11 +111,11 @@ const Modules = ({ isLightMode }) => {
 
 
 
-// get the teacher of this course 
+  // get the teacher of this course 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:8800/api/users/find/${chapter.userId}`);
+        const res = await axios.get(`${server}/api/users/find/${chapter.userId}`);
         console.log(res.data);
         setUser(res.data);
       } catch (error) {
@@ -141,27 +142,29 @@ const Modules = ({ isLightMode }) => {
       <Details>
         {user && (
           <Link to={`/Teachers/${user._id}`} style={{ textDecoration: 'none' }}>
-          <a style= {{color:`${isLightMode? ' white':'black'}`}}class="sr-only sr-only-focusable" href="#content">
-            {user.firstName} {user.lastName}</a>
-            </Link>
+            <a style={{ color: `${isLightMode ? ' white' : 'black'}` }} class="sr-only sr-only-focusable" href="#content">
+              {user.firstName} {user.lastName}</a>
+          </Link>
 
-          
+
         )}
-              
+
 
       </Details>
       <Hr />
       {courses.map((course) => (
         <div key={course._id} className="d-inline-flex">
           <a
+            target="_blank"
+            rel="noopener"
             type="button"
             className={`btn ${isLightMode ? 'btn-light ' : 'btn-dark'} btn-primary m-4`}
-            href={`http://localhost:8800/${course.file.replace(/^.*[\\/]/, '')}`}
+            href={course.file}
             style={{ margin: '20px' }}
-            download={course.src}
           >
             {course.name}
           </a>
+
         </div>
       ))}
     </>
